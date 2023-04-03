@@ -20,6 +20,7 @@ function FormInput({label, secureEntry, value, setValue, iconName, ...props}) {
                 />
                 {secureEntry && (
                     <Icon name = {hidden ? 'eye' : 'eye-slash'} 
+                        size = {15}
                         onPress={() => setHide(!hidden)}
                         style= {styles.icon}
                         />

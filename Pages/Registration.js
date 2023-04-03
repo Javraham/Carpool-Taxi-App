@@ -15,8 +15,7 @@ function Registration({navigation}) {
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
-
-            <ScrollView>
+            <ScrollView contentContainerStyle = {{flexGrow: 1}}>
             <View style = {styles.container}>
                 <View style = {styles.back}>
                     <Icon size = {20} name = 'arrow-left' onPress = {() => navigation.goBack()}/>

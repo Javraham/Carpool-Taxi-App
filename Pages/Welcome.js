@@ -2,13 +2,16 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppButton from '../app/components/appButton';
 import { NavigationContainer } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 function WelcomePage({navigation}) {
     return (
       <View style = {styles.mainContainer}>
         <View style = {styles.logoContainer}>
-          <Image style = {{width: 100, height: 100}}source = {require('../app/assets/car-xxl.png')}/>
-          <Text style={{color: 'white', fontSize: 20}}>Welcome to TaxiApp!</Text>
+          <Icon name = 'taxi' size = {100} color = 'white'/>
+          <View style = {{padding: 20}}>
+            <Text style={{color: 'white', fontSize: 20}}>Welcome to TaxiApp!</Text>
+          </View>
         </View>
         <View style = {styles.regContainer}>
           <AppButton text = "Get Started" txtColor='black' bgColor='white' onPress={() => navigation.navigate('Register')}/>

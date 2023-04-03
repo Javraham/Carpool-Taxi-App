@@ -14,14 +14,13 @@ function LoginPage({navigation}) {
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
-            <KeyboardAvoidingView>
-            <ScrollView>
+            <ScrollView contentContainerStyle = {{flexGrow: 1}}>
             <View style = {styles.container}>
                 <View style = {styles.back}>
                     <Icon size = {20} name = 'arrow-left' onPress = {() => navigation.goBack()}/>
                 </View>
                 <View style = {{alignItems: 'center', paddingVertical: 30}}>
-                    <Image style = {{width: 100, height: 100, tintColor: '#00ABE4'}}source = {require('../app/assets/car-xxl.png')}/>
+                    <Icon size = {70} name = 'taxi' color = '#00ABE4'/>
                     <Text style = {{fontSize: 30, fontWeight: 'bold', color: 'darkgrey'}}>LogIn</Text>
                 </View>
                 <View style = {{width: '100%'}}>
@@ -46,8 +45,7 @@ function LoginPage({navigation}) {
                     <AppButton text = "log in" txtColor='white' bgColor='#00ABE4'/>
                 </View>
             </View>
-        </ScrollView>
-        </KeyboardAvoidingView>
+            </ScrollView>
         </SafeAreaView>
         </SafeAreaProvider>
     );

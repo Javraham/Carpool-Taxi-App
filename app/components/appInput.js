@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         backgroundColor: '#F0F8FF',
         borderWidth: 1,
-        paddingVertical: 7,
+        paddingVertical: 10,
         paddingHorizontal: 15,
         marginBottom: 20,
         flexDirection: 'row',

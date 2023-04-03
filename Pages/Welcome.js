@@ -1,8 +1,9 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AppButton from '../app/components/appButton';
+import { NavigationContainer } from '@react-navigation/native';
 
-function WelcomePage() {
+function WelcomePage({navigation}) {
     return (
       <View style = {styles.mainContainer}>
         <View style = {styles.logoContainer}>
@@ -10,10 +11,12 @@ function WelcomePage() {
           <Text style={{color: 'white', fontSize: 20}}>Welcome to TaxiApp!</Text>
         </View>
         <View style = {styles.regContainer}>
-          <AppButton text = "Get Started" txtColor='black' bgColor='white'/>
+          <AppButton text = "Get Started" txtColor='black' bgColor='white' onPress={() => navigation.navigate('Register')}/>
           <View style = {{justifyContent: 'center', flexDirection: 'row'}}>
             <Text>Have an account? </Text>
-            <TouchableOpacity><Text style = {{color: 'blue', textDecorationLine: 'underline'}}>Log in</Text></TouchableOpacity>
+            <TouchableOpacity onPress = {() => navigation.navigate('Login')}>
+              <Text style = {{color: 'blue', textDecorationLine: 'underline'}}>Log in</Text>
+              </TouchableOpacity>
           </View>
         </View>
       </View>

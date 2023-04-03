@@ -15,6 +15,7 @@ function WelcomePage({navigation}) {
         </View>
         <View style = {styles.regContainer}>
           <AppButton text = "Get Started" txtColor='black' bgColor='white' onPress={() => navigation.navigate('Register')}/>
+          <AppButton text = "test request song" txtColor='black' bgColor='white' onPress={() => navigation.navigate('RequestSong')}/>
           <View style = {{justifyContent: 'center', flexDirection: 'row'}}>
             <Text>Have an account? </Text>
             <TouchableOpacity onPress = {() => navigation.navigate('Login')}>

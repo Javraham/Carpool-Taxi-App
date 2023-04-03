@@ -9,7 +9,9 @@ import RequestCarpool from './Pages/RequestCarpool';
 import OfferCarpool from './Pages/OfferCarpool';
 import {createStackNavigator} from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import RequestSongPage from './Pages/RequestSong';
 
 const Auth = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -25,6 +27,9 @@ export default function App() {
           options = {{headerShown: false}}
           />
         <Auth.Screen name = "Login" component = {LoginPage}
+          options = {{headerShown: false}}
+        />
+        <Auth.Screen name = "RequestSong" component = {RequestSongPage}
           options = {{headerShown: false}}
         />
       </Auth.Navigator>

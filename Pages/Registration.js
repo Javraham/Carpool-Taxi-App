@@ -7,7 +7,7 @@ import AppButton from '../app/components/appButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
 
-function Registration({navigation}) {
+function RegistrationPage({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullname, setFullname] = useState('');
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Registration;
+export default RegistrationPage;

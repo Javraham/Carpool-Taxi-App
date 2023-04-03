@@ -3,25 +3,37 @@ import { StyleSheet, Text, View, Button, Platform, TouchableHighlight } from 're
 import WelcomePage from './Pages/Welcome';
 import LoginPage from './Pages/Login';
 import Registration from './Pages/Registration';
+import HomePage from './Pages/Home';
+import UserProfile from './Pages/UserProfile';
+import RequestCarpool from './Pages/RequestCarpool';
+import OfferCarpool from './Pages/OfferCarpool';
 import {createStackNavigator} from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-const {Navigator, Screen} = createStackNavigator();
+const Auth = createStackNavigator();
+const Tabs = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Navigator>
-        <Screen name = "Welcome" component = {WelcomePage} 
+      <Auth.Navigator>
+        <Auth.Screen name = "Welcome" component = {WelcomePage} 
           options = {{headerShown: false}}
           />
-        <Screen name = "Register" component = {Registration}
+        <Auth.Screen name = "Register" component = {Registration}
           options = {{headerShown: false}}
           />
-        <Screen name = "Login" component = {LoginPage}
+        <Auth.Screen name = "Login" component = {LoginPage}
           options = {{headerShown: false}}
         />
-      </Navigator>
+      </Auth.Navigator>
+      {/* <Tabs.Navigator>
+        <Tabs.Screen name='Home' component={HomePage} />
+        <Tabs.Screen name='Offer Carpool' component={OfferCarpool} />
+        <Tabs.Screen name='Request Carpool' component={RequestCarpool} />
+        <Tabs.Screen name='Profile' component={UserProfile} />
+      </Tabs.Navigator> */}
     </NavigationContainer>
   );
   }

@@ -12,6 +12,7 @@ function FormInput({label, secureEntry, value, setValue, iconName, ...props}) {
                 <Icon name={iconName} style = {styles.icon}/>
                 <TextInput 
                     style = {{flex: 1}}
+                    autoCorrect = {false}
                     {...props} 
                     onFocus={() => setFocus(true)} 
                     onBlur={() => setFocus(false)}
@@ -33,7 +34,7 @@ function FormInput({label, secureEntry, value, setValue, iconName, ...props}) {
 
 const styles = StyleSheet.create({
     inputContainer: { 
-        borderColor: 'black',
+        borderRadius: 50,
         backgroundColor: '#F0F8FF',
         borderWidth: 1,
         paddingVertical: 10,
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     label: {
         marginVertical: 5,
         fontSize: 14,
-        color: 'lightgrey',
+        color: 'black',
     },
 
     icon: {

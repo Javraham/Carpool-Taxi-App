@@ -21,7 +21,7 @@ function LoginPage({navigation}) {
                 </View>
                 <View style = {{alignItems: 'center', paddingVertical: 30}}>
                     <Icon size = {70} name = 'taxi' color = '#00ABE4'/>
-                    <Text style = {{fontSize: 30, fontWeight: 'bold', color: 'darkgrey'}}>LogIn</Text>
+                    <Text style = {{fontSize: 30, fontWeight: 'bold', color: 'darkgrey'}}>Login</Text>
                 </View>
                 <View style = {{width: '100%'}}>
                     <FormInput 

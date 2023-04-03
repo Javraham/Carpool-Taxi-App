@@ -22,10 +22,10 @@ export default function App() {
         <Auth.Screen name = "Welcome" component = {WelcomePage} 
           options = {{headerShown: false}}
           />
-        <Screen name = "Register" component = {RegistrationPage}
+        <Auth.Screen name = "Register" component = {RegistrationPage}
           options = {{headerShown: false}}
           />
-        <Screen name = "Login" component = {NewLoginPage}
+        <Auth.Screen name = "Login" component = {NewLoginPage}
           options = {{headerShown: false}}
         />
       </Auth.Navigator>

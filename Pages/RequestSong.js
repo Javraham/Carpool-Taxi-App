@@ -31,11 +31,10 @@ function RequestSongPage({navigation}) {
                         value = {title}
                         setValue={setTitle}
                         iconName={"music"}
-                        />
+                    />
                     <FormInput 
                         placeholder = "Taylor Swift" 
                         label = "Artist Name" 
-                        secureEntry = {true}
                         value = {artist}
                         setValue={setArtist}
                         iconName={"user"}

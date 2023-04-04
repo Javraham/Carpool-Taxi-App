@@ -41,7 +41,7 @@ function RegistrationPage({navigation}) {
             else{
                 setValidity(prevInputs => ({...prevInputs, [input]:false}))
             }
-            if(text !== inputs.confirmPassword){
+            if(text !== inputs.confirmPassword || text === ''){
                 setValidity(prevInputs => ({...prevInputs, confirmPassword:false}))
             }
             else{
@@ -49,7 +49,7 @@ function RegistrationPage({navigation}) {
             }
         }
         else if (input === 'confirmPassword'){
-            if(text === inputs.password){
+            if(text === inputs.password && text !== ''){
                 setValidity(prevInputs => ({...prevInputs, [input]:true}))
             }
             else{

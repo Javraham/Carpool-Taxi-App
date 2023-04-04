@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppButton from '../app/components/appButton';
 import { TextInput, StyleSheet, Image, Text } from 'react-native';
@@ -9,15 +9,34 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
 function NewLoginPage({navigation}) {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState();
 
-    const handleUsername = (text) => {
-        setUsername(text)
+    const handleEmail = (text) => {
+        setEmail(text)
     }
 
     const handlePassword = (text) => {
         setPassword(text)
+    }
+
+    const handleErrors = (errorMsg) => {
+        setPasswordError(errorMsg);
+    }
+
+    const authenticate = () => {
+        if(password !== email) {
+            handleErrors('invalid email and/or password. Please try again.')
+        }
+        else {
+            login()
+        }
+    }
+
+    const login = () => {
+        // navigation.navigate('Home')
+        console.log('Logged in ')
     }
 
     return (
@@ -28,17 +47,18 @@ function NewLoginPage({navigation}) {
                 <View style = {styles.back}>
                     <Icon size = {20} name = 'arrow-left' onPress={() => navigation.goBack()}/>
                 </View>
+                <View style = {{flex: 2, justifyContent: 'center'}}>
                 <View style = {{alignItems: 'center', paddingVertical: 30}}>
                     <View style = {styles.icon}>
                         <Icon size = {70} name = 'taxi' color = '#00ABE4' style = {{top: 20}}/>
                     </View>
-                    <Text style = {{fontSize: 20, color: 'white', fontWeight: 'bold'}}>Taxi Carpool</Text>
+                    <Text style = {{fontSize: 30, color: 'white', fontWeight: 'bold'}}>Welcome Back</Text>
+                </View>
                 </View>
                 <View style = {styles.signin}>
                     <View style = {{width: '80%'}}>
                         <View style = {{alignItems: 'center'}}>
-                            <Text style = {{fontSize: 30, color: 'grey', fontWeight: 'bold'}}>Welcome Back!</Text>
-                            <Text style = {{fontSize: 15, color: 'black', fontWeight: 'bold'}}>Login to your account</Text>
+                            <Text style = {{fontSize: 20, color: 'grey', fontWeight: 'bold'}}>Sign in to your account</Text>
                         </View>
                         </View>
                         <View style = {{width: '80%'}}>
@@ -46,8 +66,8 @@ function NewLoginPage({navigation}) {
                             placeholder = "user123@gmail.com" 
                             label = "Email"
                             iconName={'envelope-o'}
-                            onChangeText = {text => handleUsername(text)}
-                            // error = {usernameError}
+                            onChangeText = {text => handleEmail(text)}
+                            resetError={() => handleErrors(null)}
                             />
                         <FormInput 
                         placeholder = "Password" 
@@ -56,11 +76,18 @@ function NewLoginPage({navigation}) {
                         iconName={'unlock-alt'}
                         passIcon={'eye'}
                         onChangeText = {text => handlePassword(text)}
-                        // error = {passwordError}
+                        resetError={() => handleErrors(null)}
+                        error = {passwordError}
                         />
                     </View>
-                    <View style = {{paddingVertical: 30, width: '80%'}}>
-                        <AppButton text = "log in" txtColor='white' bgColor='#00ABE4'/>
+                    <View style = {{paddingVertical: 30, width: '50%'}}>
+                        <AppButton text = "log in" txtColor='white' bgColor='#00ABE4' onPress={authenticate}/>
+                        <View style = {{flexDirection: 'row'}}>
+                        <Text>Don't have an account? </Text>
+                        <TouchableOpacity onPress = {() => navigation.navigate('Register')}>
+                            <Text style = {styles.register}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
                     </View>
                 </View>
             </View>
@@ -98,11 +125,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '100%',
         marginHorizontal: 15,
-        flex: 2,
+        flex: 1,
         borderTopLeftRadius: 70,
         borderTopRightRadius: 70,
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'center'
     },
 
     heading: {
@@ -117,6 +144,11 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         backgroundColor: '#ffcccb',
         width: '80%'
+    },
+
+    register: {
+        color: 'blue',
+        textDecorationLine: 'underline'
     }
 })
 

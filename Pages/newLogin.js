@@ -11,6 +11,15 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 function NewLoginPage({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const handleUsername = (text) => {
+        setUsername(text)
+    }
+
+    const handlePassword = (text) => {
+        setPassword(text)
+    }
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
@@ -36,20 +45,20 @@ function NewLoginPage({navigation}) {
                         <FormInput 
                             placeholder = "user123@gmail.com" 
                             label = "Email"
-                            value = {username}
-                            setValue={setUsername}
                             iconName={'envelope-o'}
+                            onChangeText = {text => handleUsername(text)}
+                            // error = {usernameError}
                             />
                         <FormInput 
                         placeholder = "Password" 
                         label = "Password" 
                         secureEntry = {true}
-                        value = {password}
-                        setValue={setPassword}
                         iconName={'unlock-alt'}
                         passIcon={'eye'}
+                        onChangeText = {text => handlePassword(text)}
+                        // error = {passwordError}
                         />
-                        </View>
+                    </View>
                     <View style = {{paddingVertical: 30, width: '80%'}}>
                         <AppButton text = "log in" txtColor='white' bgColor='#00ABE4'/>
                     </View>
@@ -90,8 +99,8 @@ const styles = StyleSheet.create({
         width: '100%',
         marginHorizontal: 15,
         flex: 2,
-        borderTopLeftRadius: 100,
-        borderTopRightRadius: 100,
+        borderTopLeftRadius: 70,
+        borderTopRightRadius: 70,
         alignItems: 'center',
         justifyContent: 'space-around'
     },
@@ -100,6 +109,14 @@ const styles = StyleSheet.create({
         fontSize: 30, 
         fontWeight: 'bold', 
         color: 'white'
+    },
+
+    error: {
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        backgroundColor: '#ffcccb',
+        width: '80%'
     }
 })
 

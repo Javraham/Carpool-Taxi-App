@@ -11,7 +11,7 @@ function FormInput({label, secureEntry, iconName, error, resetError = () => {}, 
             <Text style = {styles.label}>{label}</Text>
             <View style = {
                 [styles.inputContainer, 
-                {borderColor: error ? 'red' : isFocused ? 'darkblue' : '#F0F8FF',
+                {borderColor: error ? 'red' : isFocused ? 'lightblue' : '#F0F8FF',
                 backgroundColor: error ? '#FFF4F3' : '#F0F8FF'}
                 ]}>
                 <Icon name={iconName} style = {styles.icon}/>

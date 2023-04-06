@@ -18,7 +18,7 @@ const Tabs = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Auth.Navigator>
+      {/* <Auth.Navigator>
         <Auth.Screen name = "Welcome" component = {WelcomePage} 
           options = {{headerShown: false}}
           />
@@ -28,13 +28,13 @@ export default function App() {
         <Auth.Screen name = "Login" component = {NewLoginPage}
           options = {{headerShown: false}}
         />
-      </Auth.Navigator>
-      {/* <Tabs.Navigator>
+      </Auth.Navigator> */}
+      <Tabs.Navigator>
         <Tabs.Screen name='Home' component={HomePage} />
         <Tabs.Screen name='Offer Carpool' component={OfferCarpool} />
         <Tabs.Screen name='Request Carpool' component={RequestCarpool} />
         <Tabs.Screen name='Profile' component={UserProfile} />
-      </Tabs.Navigator> */}
+      </Tabs.Navigator>
     </NavigationContainer>
   );
   }

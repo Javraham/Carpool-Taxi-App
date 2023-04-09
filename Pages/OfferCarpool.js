@@ -10,10 +10,6 @@ export default function OfferCarpool({navigation}) {
   const [scanned, setScanned] = useState(false);
   const [scannedData, setScannedData] = useState(undefined);
 
-  // bottom sheet
-  const bottomSheetRef = useRef(null);
-  const snapPoints = ["80%"]
-
   useEffect(() => {
     navigation.setOptions({tabBarStyle: { display: 'none'}})
     const getBarCodeScannerPermissions = async () => {
@@ -23,18 +19,17 @@ export default function OfferCarpool({navigation}) {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleSnapPress = useCallback((index) => {
-    bottomSheetRef.current?.snapToIndex(index)
-},[])
-
   const handleBarCodeScanned = (target) => {
-    handleSnapPress(0)
     setScannedData(target.data)
     setScanned(true);
+    navigation.push("Carpool Offer Information", {name: "Plan Your Carpool"}) // pass in scanned data here
+    setTimeout(() => {
+      handleClean()
+    }, 2000);
   };
 
 const handleOnClose = () => {
-    handleClean()
+  handleClean()
     navigation.navigate('Home')
 }
 
@@ -58,27 +53,9 @@ const handleClean = () => {
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
         />
-
         <IconComponentProvider IconComponent={MaterialCommunityIcons}>
             <IconButton icon={props => <Icon name="close" {...props} color='white'/>} style={styles.closeButton} onPress={handleOnClose} pressEffect='none'/>
         </IconComponentProvider>
-
-       {scanned && <BottomeSheet ref={bottomSheetRef} snapPoints={snapPoints} enablePanDownToClose={true} onClose={() => handleClean()} >
-            <BottomSheetView style={styles.bottomSheetContainer}>
-                <Text style={styles.bottomSheetHeader} variant='h5'>Offer Information</Text>
-                <View style={styles.formContainer}>
-                {
-                    formFields.map((field) => {
-                        return (
-                            <TextInput variant="outlined" label={field} style={{width:'100%'}} />
-                        )
-                    })
-                }
-                <Button title="Offer Carpool" />
-                </View>
-            </BottomSheetView>
-        </BottomeSheet>}
-
     </View>
   );
 }

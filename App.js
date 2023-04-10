@@ -41,6 +41,9 @@ export default function App() {
         <Auth.Screen name = "Login" component = {NewLoginPage}
           options = {{headerShown: false}}
         />
+        <Auth.Screen name = "Home" component = {HomePage}
+          options = {{headerShown: false}}
+        />
         <Auth.Screen name = "AuthenticateSpotify" component = {AuthenticateSpotify}
           options = {{headerShown: false}}
         />

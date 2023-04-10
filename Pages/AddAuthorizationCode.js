@@ -27,12 +27,13 @@ function AddAuthorizationCode({route, navigation}) {
     })
     .then(response => response.json())
     .then(json => {
-        console.log(json);
+        console.log('auth code added', json);
+        navigation.navigate('Home');
     }).catch(error => {
         console.log(error);
     });
 
-    return (<Text>====================</Text>);
+    return (<Text></Text>);
 
 }
 

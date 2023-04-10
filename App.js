@@ -6,6 +6,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginPage from './Pages/Login';
 import RateRiderPage from './Pages/RateRider';
+import UserProfile from './Pages/UserProfile';
+import UserProfileEdit from './Pages/UserEditProfile';
 
 const {Navigator, Screen} = createStackNavigator();
 
@@ -24,6 +26,6 @@ export default function App() {
     //     />
     //   </Navigator>
     // </NavigationContainer>
-    <RateRiderPage />
+    <UserProfileEdit />
   );
   }

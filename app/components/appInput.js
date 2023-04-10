@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextInput, StyleSheet, View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-function FormInput({label, secureEntry, iconName, error, resetError = () => {}, isValid,...props}) 
+function FormInput({label, secureEntry = false, iconName, error, resetError = () => {}, isValid,...props}) 
 {
     const [isFocused, setFocus] = useState(false);
     const [hidden, setHide] = useState(secureEntry)

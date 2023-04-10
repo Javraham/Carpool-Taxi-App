@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { StyleSheet, Text } from 'react-native';
+import AppButton from '../app/components/appButton';
+import { TextInput, StyleSheet, Image, Text } from 'react-native';
+import FormInput from '../app/components/appInput';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import * as Linking from 'expo-linking';
 import Constants from "expo-constants";
@@ -33,7 +38,11 @@ function AddAuthorizationCode({route, navigation}) {
         console.log(error);
     });
 
-    return (<Text></Text>);
+    return (
+        <View style = {styles.back}>
+        <Icon size = {20} name = 'arrow-left' onPress = {() => navigation.goBack()}/>
+        </View>
+    );
 
 }
 

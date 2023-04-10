@@ -25,6 +25,7 @@ function AuthenticateSpotify({navigation}) {
     // const afterURL = 'exp://192.168.0.246:19000/--/addAuthCode';
     // const afterURL = 'exp://localhost:19000/--/addAuthCode'; // doesn't work?
     console.log(userURL);
+    console.log(afterURL);
 
     fetch(userURL)
     .then(response => response.json())
@@ -55,10 +56,13 @@ playlist-modify-private`);
         <SafeAreaView style = {{flex: 1}}>
         <ScrollView contentContainerStyle = {{flexGrow: 1}}>
             <View style = {styles.container}>
-            <Text style={styles.baseText}>
-            <Text style={styles.titleText}>
-                {titleText}
-            </Text>
+                <View style = {styles.back}>
+                    <Icon size = {20} name = 'arrow-left' onPress = {() => navigation.goBack()}/>
+                </View>
+                <Text style={styles.baseText}>
+                <Text style={styles.titleText}>
+                    {titleText}
+                </Text>
             </Text>
             </View>
         </ScrollView>

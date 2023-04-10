@@ -11,13 +11,26 @@ import {createStackNavigator} from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import NewLoginPage from './Pages/newLogin';
+import AuthenticateSpotify from './Pages/AuthenticateSpotify';
+import AddAuthorizationCode from './Pages/AddAuthorizationCode';
 
 const Auth = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
+const linking = { // for spotify
+    prefixes: ['exp://192.168.0.246:19000'], // TODO: is this temp
+    config: {
+        screens: {
+            AddAuthorizationCode: {
+                path: "--/addAuthCode",
+            }
+        }
+    }
+}
+
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking = {linking}>
       <Auth.Navigator>
         <Auth.Screen name = "Welcome" component = {WelcomePage} 
           options = {{headerShown: false}}
@@ -26,6 +39,12 @@ export default function App() {
           options = {{headerShown: false}}
           />
         <Auth.Screen name = "Login" component = {NewLoginPage}
+          options = {{headerShown: false}}
+        />
+        <Auth.Screen name = "AuthenticateSpotify" component = {AuthenticateSpotify}
+          options = {{headerShown: false}}
+        />
+        <Auth.Screen name = "AddAuthorizationCode" component = {AddAuthorizationCode}
           options = {{headerShown: false}}
         />
       </Auth.Navigator>

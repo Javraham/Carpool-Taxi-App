@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
-function AppButton({text, onPress, txtColor, bgColor}){
+function AppButton({text, onPress, txtColor, bgColor, ...props}){
     return(
-      <TouchableOpacity onPress = {onPress}>
+      <TouchableOpacity onPress = {onPress} {...props}>
         <View style = {[styles.button, {backgroundColor: bgColor}]}>
           <Text style = {[styles.buttonText, {color: txtColor}]}>{text.toUpperCase()}</Text>
         </View>

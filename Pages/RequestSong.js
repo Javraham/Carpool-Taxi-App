@@ -9,8 +9,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
 function RequestSongPage({navigation}) {
-    const [title, setTitle] = useState('');
-    const [artist, setArtist] = useState('');
+    const [query, setQuery] = useState('');
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
@@ -26,18 +25,11 @@ function RequestSongPage({navigation}) {
 
                 <View style = {{width: '100%'}}>
                     <FormInput 
-                        placeholder = "Despacito" 
-                        label = "Song Title"
-                        value = {title}
-                        setValue={setTitle}
+                        placeholder = "Never Gonna Give You Up Rick Astley" 
+                        label = "Song"
+                        value = {query}
+                        setValue={setQuery}
                         iconName={"music"}
-                    />
-                    <FormInput 
-                        placeholder = "Taylor Swift" 
-                        label = "Artist Name" 
-                        value = {artist}
-                        setValue={setArtist}
-                        iconName={"user"}
                     />
                 </View>
 

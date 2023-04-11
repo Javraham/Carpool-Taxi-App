@@ -101,7 +101,7 @@ export default function CarpoolOfferInformation({navigation,route}) {
             await PostOffer(offerInformation)
             navigation.navigate('Home Tab')
         }catch(err){
-            console.log(err)
+            console.log(err.response.data)
         }
     }
 

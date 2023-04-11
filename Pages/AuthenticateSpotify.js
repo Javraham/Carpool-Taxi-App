@@ -57,11 +57,9 @@ playlist-modify-private`);
                 <View style = {styles.back}>
                     <Icon size = {20} name = 'arrow-left' onPress = {() => navigation.goBack()}/>
                 </View>
-                <Text style={styles.baseText}>
                 <Text style={styles.titleText}>
                     {titleText}
                 </Text>
-            </Text>
             </View>
         </ScrollView>
         </SafeAreaView>

@@ -18,6 +18,7 @@ import RateRiderPage from './Pages/RateRider';
 import UserProfileEdit from './Pages/UserEditProfile';
 import AuthenticateSpotifyPage from './Pages/AuthenticateSpotify';
 import AddAuthorizationCodePage from './Pages/AddAuthorizationCode';
+import RequestSongPage from './Pages/RequestSong';
 
 import axios from 'axios';
 import Constants from "expo-constants";
@@ -75,6 +76,7 @@ const linking = { // for spotify
 }
 
 export default function App() {
+    // not sure where to the 3 spotify pages
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <NavigationContainer linking = {linking}>
@@ -91,11 +93,15 @@ export default function App() {
           <Auth.Screen name = "Home" component = {Tab} 
             options = {{headerShown: false}}
             />
+        
           <Auth.Screen name = "AuthenticateSpotify" component = {AuthenticateSpotifyPage} 
             options = {{headerShown: false}}
             />
           <Auth.Screen name = "AddAuthorizationCode" component = {AddAuthorizationCodePage} 
             options = {{headerShown: false}}
+            />
+          <Auth.Screen name = "RequestSong" component = {RequestSongPage}
+              options = {{headerShown: false}}
             />
         </Auth.Navigator>
       </NavigationContainer>

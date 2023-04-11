@@ -16,9 +16,15 @@ import { IconComponentProvider } from "@react-native-material/core";
 import CarpoolRequestInformation from './Pages/CarpoolRequestInformation';
 import RateRiderPage from './Pages/RateRider';
 import UserProfileEdit from './Pages/UserEditProfile';
+import AuthenticateSpotify from './Pages/AuthenticateSpotify';
+import AddAuthorizationCode from './Pages/AddAuthorizationCode';
 
 import axios from 'axios';
-axios.defaults.baseURL = "http://10.0.1.23:8888"
+import Constants from "expo-constants";
+const { manifest } = Constants;
+
+// axios.defaults.baseURL = "http://10.0.1.23:8888"
+axios.defaults.baseURL = `http://${manifest.debuggerHost.split(':').shift()}:8888`;
 
 const Auth = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -56,10 +62,22 @@ const Tab = () => {
         </Tabs.Navigator>
   )
 }
+
+const linking = { // for spotify
+    prefixes: ['exp://192.168.0.246:19000'], // TODO: is this temp
+    config: {
+        screens: {
+            AddAuthorizationCode: {
+                path: "--/addAuthCode",
+            }
+        }
+    }
+}
+
 export default function App() {
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-      <NavigationContainer>
+      <NavigationContainer linking = {linking}>
       <Auth.Navigator>
           <Auth.Screen name = "Welcome" component = {WelcomePage} 
             options = {{headerShown: false}}

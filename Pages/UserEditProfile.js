@@ -6,40 +6,34 @@ import FormInput from '../app/components/appInput';
 import AppButton from '../app/components/appButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
-import Register from '../api/register';
+import { TouchableOpacity } from 'react-native';
 
-function RegistrationPage({navigation}) {
-    /*
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [fullname, setFullname] = useState('');
-    const [phonenumber, setPhonenumber] = useState('');
-    */
+
+
+function UserProfileEdit({navigation}) {
+
+    //sample data
     const [inputs, setInputs] = useState({
-        email: '',
-        fullname: '',
-        phonenumber: '',
+        email: 'abhi@gmail.com',
+        fullname: 'Abhiram Neelamraju' ,
+        phonenumber: '1234567890',
+        playlistLink: 'https://open.spotify.com/playlist/3cJ66AX6yV2MglTSNkgGYA?si=67fddd03b2f74c56',
         password: '',
-        confirmPassword: ''
+        oldPassword: ''
     });
 
-    async function handleRegister() {
-        try{
-            await Register({email, password, full_name:fullname, phone_number: phonenumber})
-            navigation.navigate("Home")
-        }catch(err){
-            console.log(`registration failes! --- ${err}`)
-        }
+    const [showPassword, setShow] = useState(false);
 
-    }
+    
+    const numRatings = '20';
+    const avgRating = '4.3';
 
     const [errors, setErrors] = useState({});
     const [valid, setValidity] = useState({
-        email: false,
-        fullname: false,
-        phonenumber: false,
-        password: false,
-        confirmPassword: false
+        email: true,
+        fullname: true,
+        phonenumber: true,
+        password: true,
     });
 
     const handleInputs = (text, input) => {
@@ -53,20 +47,6 @@ function RegistrationPage({navigation}) {
     const checkValidity = (text, input) => {
         if(input === 'password'){
             if(text.length >= 8){
-                setValidity(prevInputs => ({...prevInputs, [input]:true}))
-            }
-            else{
-                setValidity(prevInputs => ({...prevInputs, [input]:false}))
-            }
-            if(text !== inputs.confirmPassword || text === ''){
-                setValidity(prevInputs => ({...prevInputs, confirmPassword:false}))
-            }
-            else{
-                setValidity(prevInputs => ({...prevInputs, confirmPassword:true}))
-            }
-        }
-        else if (input === 'confirmPassword'){
-            if(text === inputs.password && text !== ''){
                 setValidity(prevInputs => ({...prevInputs, [input]:true}))
             }
             else{
@@ -105,6 +85,8 @@ function RegistrationPage({navigation}) {
         checkValidity(text, input)
     }
 
+    console.log(inputs.playlistLink)
+
     const authenticate = () => {
         if(!valid.email){
             handleErrors('Please input a valid email', 'email')
@@ -119,15 +101,30 @@ function RegistrationPage({navigation}) {
             handleErrors('Password must be at least 8 characters', 'password')
         }
 
-        if(!valid.confirmPassword){
-            handleErrors('Passwords do not match', 'confirmPassword')
-        }
-
         if (Object.entries(valid).every(([key, value]) => value )){
-            await handleRegister();
+            updateProfile();
+        }
+        else{
+            console.log(valid)
         }
     }
 
+    const updateProfile = () => {
+        console.log('updated')
+    }
+
+    const toggleShow = () => {
+        setShow(!showPassword)
+        if(showPassword){
+            setValidity(prevInputs => ({...prevInputs, password:true}))
+            handleErrors(null, 'password')
+        }
+        else{
+            setValidity(prevInputs => ({...prevInputs, password:false}))
+        }
+    }
+    
+    console.log(valid.password)
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
@@ -138,62 +135,82 @@ function RegistrationPage({navigation}) {
                 </View>
                 <View style = {{alignItems: 'center'}}>
                     <Icon name = 'user-circle' size = {70} color = {'#00ABE4'}/>
-                    <Text style = {{fontSize: 24, fontWeight: 'bold', color: 'grey'}}>Create Account</Text>
+                    <Text style = {{fontSize: 24, fontWeight: 'bold', color: 'grey', margin: 15}}>{inputs.fullname}</Text>
+                    <Text style = {{fontSize: 16, color: 'grey'}}>{avgRating} <Icon name = "star" size = {16} color = {"#eaea00"} /> ({numRatings} ratings)</Text>
+
                 </View>
                 <View style = {{ width: '100%'}}>
                     <FormInput 
                         label='Full Name' 
-                        placeholder = "Enter your full name"
+                        placeholder = {inputs.fullname}
                         iconName={'user'}
-                        error = {errors.fullname}
-                        resetError = {() => handleErrors(null, 'fullname')}
                         onChangeText = {text => displayInputState(text, 'fullname')}
+                        value = {inputs.fullname}
+                        error={errors.fullname}
+                        resetError = {() => handleErrors(null, 'fullname')}
                         isValid={valid.fullname}
                         />
+                    
                     <FormInput 
-                        inputMode = 'email'
                         label='Email' 
-                        placeholder = "Enter your email address"
+                        placeholder = {'email'}
                         iconName={'envelope-o'}
-                        error = {errors.email}
-                        resetError = {() => handleErrors(null, 'email')}
                         onChangeText = {text => displayInputState(text, 'email')}
+                        value = {inputs.email}
+                        error={errors.email}
+                        resetError = {() => handleErrors(null, 'email')}
                         isValid={valid.email}
                         />
                     <FormInput 
-                        inputMode = 'tel'
                         label='Phone Number' 
-                        placeholder  = "Enter your phone number"
+                        placeholder  = {'phone number'}
                         iconName={'phone'}
-                        error = {errors.phonenumber}
-                        resetError = {() => handleErrors(null, 'phonenumber')}
                         onChangeText = {text => displayInputState(text, 'phonenumber')}
+                        value = {inputs.phonenumber}
+                        error={errors.phonenumber}
+                        resetError = {() => handleErrors(null, 'phonenumber')}
                         isValid={valid.phonenumber}
+                        />
+                    
+                    <FormInput 
+                        label='Spotify Playlist Link' 
+                        placeholder  = {'Link'}
+                        iconName={'music'}
+                        onChangeText = {text => displayInputState(text, 'playlistLink')}
+                        value = {inputs.playlistLink}
                         />
                     <FormInput 
                         label='Password' 
-                        placeholder  = "Enter your password"
                         iconName={'lock'}
-                        secureEntry={true}
-                        error = {errors.password}
-                        resetError = {() => handleErrors(null, 'password')}
+                        value = {'*********'}
+                        editable={false}
+                        />
+                    <TouchableOpacity onPress={toggleShow}><Text style = {{color: 'blue', textDecorationLine: 'underline'}}>{!showPassword ? 'Change Password?' : 'Cancel'}</Text></TouchableOpacity>
+                    {showPassword &&
+                        <View> 
+                        <FormInput 
+                        label='Old Password' 
+                        placeholder  = {'type old password'}
+                        iconName={'lock'}
+                        onChangeText = {text => displayInputState(text, 'oldPassword')}
+                        secureEntry = {true}
+                        /> 
+                        <FormInput 
+                        label='New Password' 
+                        placeholder  = {'type new password'}
+                        iconName={'lock'}
                         onChangeText = {text => displayInputState(text, 'password')}
-                        isValid={valid.password}
+                        error = {errors.password}
+                        secureEntry ={true}
+                        isValid = {valid.password}
+                        resetError = {() => handleErrors(null, 'password')}
                         />
-                    <FormInput 
-                        label='Confirm Password' 
-                        placeholder = "Re-enter your password"
-                        iconName={'lock'}
-                        secureEntry={true}
-                        error = {errors.confirmPassword}
-                        resetError = {() => handleErrors(null, 'confirmPassword')}
-                        onChangeText = {text => displayInputState(text, 'confirmPassword')}
-                        isValid={valid.confirmPassword}
-                        />
+                        </View>
+                    }
                 </View>
                 <View style = {{width: '100%'}}>
-
-                    <AppButton text="Create Account" bgColor='#00ABE4' txtColor='white' onPress={authenticate}/>
+                    <AppButton text="save profile" bgColor='#00ABE4' txtColor='white' onPress={authenticate}/>
+                    <AppButton text = "delete profile"/>
                 </View>
             </View>
             </ScrollView>
@@ -217,4 +234,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default RegistrationPage;
+export default UserProfileEdit;

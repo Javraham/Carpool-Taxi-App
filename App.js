@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, Platform, TouchableHighlight } from 'react-native';
 import WelcomePage from './Pages/Welcome';
-import LoginPage from './Pages/Login';
 import RegistrationPage from './Pages/Registration';
 import HomePage from './Pages/Home';
 import UserProfile from './Pages/UserProfile';
@@ -10,11 +9,13 @@ import OfferCarpool from './Pages/OfferCarpool';
 import {createStackNavigator} from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import NewLoginPage from './Pages/newLogin';
+import LoginPage from './Pages/Login';
 import CarpoolOfferInformation from './Pages/CarpoolOfferInformation';
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { IconComponentProvider } from "@react-native-material/core";
 import CarpoolRequestInformation from './Pages/CarpoolRequestInformation';
+import RateRiderPage from './Pages/RateRider';
+import UserProfileEdit from './Pages/UserEditProfile';
 
 import axios from 'axios';
 axios.defaults.baseURL = "http://10.0.1.23:8888"
@@ -66,7 +67,7 @@ export default function App() {
           <Auth.Screen name = "Register" component = {RegistrationPage}
             options = {{headerShown: false}}
             />
-          <Auth.Screen name = "Login" component = {NewLoginPage}
+          <Auth.Screen name = "Login" component = {LoginPage}
             options = {{headerShown: false}}
           />
           <Auth.Screen name = "Home" component = {Tab} 

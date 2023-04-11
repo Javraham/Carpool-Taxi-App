@@ -1,17 +1,54 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppButton from '../app/components/appButton';
 import { TextInput, StyleSheet, Image, Text } from 'react-native';
 import FormInput from '../app/components/appInput';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import DateInput from '../app/components/dateInput';
+import Login from '../api/login';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 function LoginPage({navigation}) {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordError, setPasswordError] = useState();
+
+    const handleEmail = (text) => {
+        setEmail(text)
+    }
+
+    const handlePassword = (text) => {
+        setPassword(text)
+    }
+
+    const handleErrors = (errorMsg) => {
+        setPasswordError(errorMsg);
+    }
+
+    /*
+    const authenticate = () => {
+        if(password !== email) {
+            handleErrors('invalid email and/or password. Please try again.')
+        }
+        else {
+            login()
+        }
+    }
+    */
+
+    async function handleLogin() {
+        try{
+            await Login({email:username, password})
+            navigation.navigate("Home")
+        }catch(err){
+            console.log(`login error! --- ${err}`)
+            handleErrors('invalid email and/or password. Please try again.')
+        }
+    }
 
     return (
         <SafeAreaProvider>
@@ -19,32 +56,55 @@ function LoginPage({navigation}) {
             <ScrollView contentContainerStyle = {{flexGrow: 1}}>
             <View style = {styles.container}>
                 <View style = {styles.back}>
-                    <Icon size = {20} name = 'arrow-left' onPress = {() => navigation.goBack()}/>
+                    <Icon size = {20} name = 'arrow-left' onPress={() => navigation.goBack()}/>
                 </View>
+                <View style = {{flex: 2, justifyContent: 'center'}}>
                 <View style = {{alignItems: 'center', paddingVertical: 30}}>
-                    <Icon size = {70} name = 'taxi' color = '#00ABE4'/>
-                    <Text style = {{fontSize: 30, fontWeight: 'bold', color: 'darkgrey'}}>Login</Text>
+                    <View style = {styles.icon}>
+                        <Icon size = {70} name = 'taxi' color = '#00ABE4' style = {{top: 20}}/>
+                    </View>
+                    <Text style = {{fontSize: 30, color: 'white', fontWeight: 'bold'}}>Welcome Back</Text>
                 </View>
-                <View style = {{width: '100%'}}>
-                    <FormInput 
-                        placeholder = "user123@gmail.com" 
-                        label = "Email"
-                        value = {username}
-                        setValue={setUsername}
-                        iconName={'envelope-o'}
-                        />
-                    <FormInput 
-                    placeholder = "Password" 
-                    label = "Password" 
-                    secureEntry = {true}
-                    value = {password}
-                    setValue={setPassword}
-                    iconName={'unlock-alt'}
-                    passIcon={'eye'}
-                    />
                 </View>
+        /*
                 <View style = {{width: '100%', paddingVertical: 30}}>
                     <AppButton text = "log in" txtColor='white' bgColor='#00ABE4' testProp={"test"}/>
+                    */
+                <View style = {styles.signin}>
+                    <View style = {{width: '80%'}}>
+                        <View style = {{alignItems: 'center'}}>
+                            <Text style = {{fontSize: 20, color: 'grey', fontWeight: 'bold'}}>Sign in to your account</Text>
+                        </View>
+                        </View>
+                        <View style = {{width: '80%'}}>
+                        <FormInput 
+                            placeholder = "user123@gmail.com" 
+                            label = "Email"
+                            iconName={'envelope-o'}
+                            onChangeText = {text => handleEmail(text)}
+                            resetError={() => handleErrors(null)}
+                            />
+                        <FormInput 
+                        placeholder = "Password" 
+                        label = "Password" 
+                        secureEntry = {true}
+                        iconName={'unlock-alt'}
+                        passIcon={'eye'}
+                        onChangeText = {text => handlePassword(text)}
+                        resetError={() => handleErrors(null)}
+                        error = {passwordError}
+                        />
+                    </View>
+                    <View style = {{paddingVertical: 30, width: '50%'}}>
+                        <AppButton text = "log in" txtColor='white' bgColor='#00ABE4' onPress={handleLogin}/>
+                    </View>
+                    <View style = {{flexDirection: 'row'}}>
+                        <Text>Don't have an account? </Text>
+                        <TouchableOpacity onPress = {() => navigation.navigate('Register')}>
+                            <Text style = {styles.register}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
+                    {/* <DateInput /> */}
                 </View>
             </View>
             </ScrollView>
@@ -58,13 +118,53 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center',
-        marginHorizontal: 15,
+        backgroundColor: '#00ABE4'
     },
 
     back: {
         position: 'absolute',
         top: 20,
         left: 10,
+    },
+
+    icon: {
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 62,
+        width: 125,
+        height: 125,
+        alignItems: 'center',
+        backgroundColor: 'white'
+    },
+
+    signin: {
+        backgroundColor: 'white',
+        width: '100%',
+        marginHorizontal: 15,
+        flex: 1,
+        borderTopLeftRadius: 70,
+        borderTopRightRadius: 70,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    heading: {
+        fontSize: 30, 
+        fontWeight: 'bold', 
+        color: 'white'
+    },
+
+    error: {
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 20,
+        backgroundColor: '#ffcccb',
+        width: '80%'
+    },
+
+    register: {
+        color: 'blue',
+        textDecorationLine: 'underline'
     }
 })
 

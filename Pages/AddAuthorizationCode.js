@@ -10,33 +10,35 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import Constants from "expo-constants";
 const { manifest } = Constants;
-
-
-// TODO: get user info from smth
-const user = { email : "test@gmail.com" };
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AddAuthorizationCode({route, navigation}) {
-    const authorization_code = route.params.code;
-    const url = `http://${manifest.debuggerHost.split(':').shift()}:8888/addAuthorizationCode`;
-    console.log("auth code", authorization_code);
-    console.log(url);
+    console.log('in add auth code')
 
-    fetch(url, {
-        method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            'email' : user.email,
-            'authorization_code' : authorization_code
+    async function addAuthCode() {
+        const email = await AsyncStorage.getItem("email");
+        const authorization_code = route.params.code;
+        const url = `http://${manifest.debuggerHost.split(':').shift()}:8888/addAuthorizationCode`;
+        console.log("auth code", authorization_code);
+
+        fetch(url, {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                'email' : email,
+                'authorization_code' : authorization_code
+            })
+            // body: `email=${user.email}&authorization_code=${auth_code}`
         })
-        // body: `email=${user.email}&authorization_code=${auth_code}`
-    })
-    .then(response => response.json())
-    .then(json => {
-        console.log('auth code added', json);
-        navigation.navigate('Home');
-    }).catch(error => {
-        console.log(error);
-    });
+        .then(response => response.json())
+        .then(json => {
+            console.log('auth code added', json);
+            navigation.navigate('Home');
+        }).catch(error => {
+            console.log(error);
+        });
+    }
+    addAuthCode();
 
     return (
         <View style = {styles.back}>
@@ -45,5 +47,27 @@ function AddAuthorizationCode({route, navigation}) {
     );
 
 }
+
+const styles = StyleSheet.create({
+    titleText: {
+        fontSize: 24, 
+        fontWeight: 'bold', 
+        color: 'grey'
+    },
+
+    container: {
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
+        marginHorizontal: 15,
+    },
+
+    back: {
+        position: 'absolute',
+        top: 20,
+        left: 10,
+    }
+})
+
 
 export default AddAuthorizationCode;

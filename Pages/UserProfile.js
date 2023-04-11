@@ -71,6 +71,10 @@ function UserProfile({navigation}) {
                 </View>
                 <View style = {{width: '100%'}}>
                     <AppButton text="Edit" bgColor='#00ABE4' txtColor='white' onPress = {() => navigation.navigate('ProfileEdit')}/>
+                <View style = {{flexDirection: 'row'}}>
+                    <AppButton style = {{width: '50%'}} text="Authorize Spotify" bgColor='#00ABE4' txtColor='white' onPress = {() => navigation.navigate('AuthenticateSpotify')}/>
+                    <AppButton style = {{width: '50%'}} text="Request Song" bgColor='#00ABE4' txtColor='white' onPress = {() => navigation.navigate('AuthenticateSpotify')}/>
+                </View>
                 </View>
             </View>
             </ScrollView>

@@ -16,8 +16,8 @@ import { IconComponentProvider } from "@react-native-material/core";
 import CarpoolRequestInformation from './Pages/CarpoolRequestInformation';
 import RateRiderPage from './Pages/RateRider';
 import UserProfileEdit from './Pages/UserEditProfile';
-import AuthenticateSpotify from './Pages/AuthenticateSpotify';
-import AddAuthorizationCode from './Pages/AddAuthorizationCode';
+import AuthenticateSpotifyPage from './Pages/AuthenticateSpotify';
+import AddAuthorizationCodePage from './Pages/AddAuthorizationCode';
 
 import axios from 'axios';
 import Constants from "expo-constants";
@@ -89,6 +89,12 @@ export default function App() {
             options = {{headerShown: false}}
           />
           <Auth.Screen name = "Home" component = {Tab} 
+            options = {{headerShown: false}}
+            />
+          <Auth.Screen name = "AuthenticateSpotify" component = {AuthenticateSpotifyPage} 
+            options = {{headerShown: false}}
+            />
+          <Auth.Screen name = "AddAuthorizationCode" component = {AddAuthorizationCodePage} 
             options = {{headerShown: false}}
             />
         </Auth.Navigator>

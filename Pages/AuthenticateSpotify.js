@@ -10,46 +10,44 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import * as Linking from 'expo-linking';
 import Constants from "expo-constants";
 const { manifest } = Constants;
-
-
-// TODO: get user info from smth
-const user = { email : "test@gmail.com" };
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AuthenticateSpotify({navigation}) {
     console.log("in auth spotify");
     const [titleText, setTitleText] = useState("");
 
-    // const url = `https://${IP}/getUser?email=${user.email}`;
-    const userURL = `http://${manifest.debuggerHost.split(':').shift()}:8888/getUser?email=${user.email}`;
-    const afterURL = Linking.createURL("addAuthCode"); // TODO: is this not temporary - update app settings every time
-    // const afterURL = 'exp://192.168.0.246:19000/--/addAuthCode';
-    // const afterURL = 'exp://localhost:19000/--/addAuthCode'; // doesn't work?
-    console.log(userURL);
-    console.log(afterURL);
+    async function authSpotify() {
+        const access_token = await AsyncStorage.getItem("access_token");
+        const email = await AsyncStorage.getItem("email");
+        const userURL = `http://${manifest.debuggerHost.split(':').shift()}:8888/getUser?email=${email}`;
+        const afterURL = Linking.createURL("addAuthCode"); // TODO: is this not temporary - update app settings every time
+        // const afterURL = 'exp://192.168.0.246:19000/--/addAuthCode';
+        // const afterURL = 'exp://localhost:19000/--/addAuthCode'; // doesn't work?
+        console.log(userURL);
+        console.log(afterURL);
 
-    fetch(userURL)
-    .then(response => response.json())
-    .then(json => {
-        console.log(json);
-        if ("authorization_code" in json) {
-            console.log("user already has authorization_code");
-            setTitleText("User Already Authorized");
-        } else {
-            console.log("attempting to add authorization_code");
-            // console.log(thisURL); // was exp://192.168.0.246:19000
-            console.log(afterURL); 
-            Linking.openURL(`https://accounts.spotify.com/authorize
+        fetch(userURL, { header : { "Authorization" : access_token } })
+            .then(response => response.json())
+            .then(json => {
+                console.log(json);
+                if ("authorization_code" in json) {
+                    console.log("user already has authorization_code");
+                    setTitleText("Spotify Already Authorized");
+                } else {
+                    console.log("attempting to add authorization_code");
+                    // console.log(thisURL); // was exp://192.168.0.246:19000
+                    console.log(afterURL); 
+                    setTitleText("Waiting for Spotify...");
+                    Linking.openURL(`https://accounts.spotify.com/authorize
 ?client_id=92e530b041c64d55afd304e3db2d5df4&response_type=code
 &redirect_uri=${afterURL}&scope=playlist-modify-public%20
 playlist-modify-private`);
-            setTitleText("Waiting for Spotify...");
-        }
-    }).catch(error => {
-        console.error(error);
-    });
-
-    /*
-    */
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+    }
+    authSpotify();
 
     return (
         <SafeAreaProvider>

@@ -10,6 +10,7 @@ export default async function Login({email, password}) {
     const res = await axios.post("/auth/signin", {email: email.toLowerCase(), password})
     AsyncStorage.setItem("access_token", res.headers["authorization"].split(" ")[1])
     AsyncStorage.setItem("user", JSON.stringify(await res.data))
+    AsyncStorage.setItem("email", email.toLowerCase()) // also unnecessary but whatever
     
     console.log(`${email} --- ${res.headers["authorization"].split(" ")[1]}`)
     return res

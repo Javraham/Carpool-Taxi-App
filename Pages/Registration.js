@@ -23,16 +23,6 @@ function RegistrationPage({navigation}) {
         confirmPassword: ''
     });
 
-    async function handleRegister() {
-        try{
-            await Register({email, password, full_name:fullname, phone_number: phonenumber})
-            navigation.navigate("Home")
-        }catch(err){
-            console.log(`registration failes! --- ${err}`)
-        }
-
-    }
-
     const [errors, setErrors] = useState({});
     const [valid, setValidity] = useState({
         email: false,
@@ -48,6 +38,24 @@ function RegistrationPage({navigation}) {
 
     const handleErrors = (errorMessage, input) => {
         setErrors((prevErrors) => ({...prevErrors, [input]: errorMessage}))
+    }
+
+    async function handleRegister() {
+        const userInfo = {email:inputs.email, password:inputs.password, full_name:inputs.fullname, 
+            phone_number: inputs.phonenumber};
+        console.log(userInfo)
+        try{
+            await Register(userInfo)
+            navigation.navigate("Home")
+        }catch(err){
+            console.log(`registration failes! --- ${err}`)
+            console.log(err.response.data);
+            if (err.response.data == 'email already in use') {
+                handleErrors(err.response.data, 'email');
+            } else {
+                handleErrors(err.response.data, 'phonenumber');
+            }
+        }
     }
 
     const checkValidity = (text, input) => {
@@ -124,7 +132,7 @@ function RegistrationPage({navigation}) {
         }
 
         if (Object.entries(valid).every(([key, value]) => value )){
-            await handleRegister();
+            handleRegister();
         }
     }
 

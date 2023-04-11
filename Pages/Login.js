@@ -11,7 +11,6 @@ import Login from '../api/login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
 function LoginPage({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -29,24 +28,13 @@ function LoginPage({navigation}) {
         setPasswordError(errorMsg);
     }
 
-    /*
-    const authenticate = () => {
-        if(password !== email) {
-            handleErrors('invalid email and/or password. Please try again.')
-        }
-        else {
-            login()
-        }
-    }
-    */
-
     async function handleLogin() {
         try{
-            await Login({email:username, password})
+            await Login({email, password})
             navigation.navigate("Home")
         }catch(err){
             console.log(`login error! --- ${err}`)
-            handleErrors('invalid email and/or password. Please try again.')
+            handleErrors('incorrect credentials');
         }
     }
 
@@ -66,10 +54,6 @@ function LoginPage({navigation}) {
                     <Text style = {{fontSize: 30, color: 'white', fontWeight: 'bold'}}>Welcome Back</Text>
                 </View>
                 </View>
-        /*
-                <View style = {{width: '100%', paddingVertical: 30}}>
-                    <AppButton text = "log in" txtColor='white' bgColor='#00ABE4' testProp={"test"}/>
-                    */
                 <View style = {styles.signin}>
                     <View style = {{width: '80%'}}>
                         <View style = {{alignItems: 'center'}}>

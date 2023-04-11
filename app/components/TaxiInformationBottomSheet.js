@@ -1,25 +1,18 @@
-import react, {useRef, useCallback, useState} from 'react';
+import react, {useRef, useCallback, useState, useEffect} from 'react';
 import {View, StyleSheet, Pressable} from 'react-native';
 import BottomeSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 import NumericInput from 'react-native-numeric-input'
 import { Text } from '@react-native-material/core';
 import CustomText from './CustomText';
 
-export default function CarpoolInfoBottomSheet({sheetRef, offer}){
-    const [value, setValue] = useState(0);
-    const snapPoints = ["75%"]
-
+export default function TaxiInformationBottomSheet({sheetRef, taxiInformation}){
+    const snapPoints = ["70%"]
     return(
         <BottomeSheet ref={sheetRef} snapPoints={snapPoints} enablePanDownToClose={true} >
             <BottomSheetView style={styles.bottomSheetContainer}>
-                <Text style={styles.bottomSheetHeader} variant='h5'>Carpool Information</Text>
+                <Text style={styles.bottomSheetHeader} variant='h5'>Taxi Information</Text>
                 <View style={styles.textContainer}>
-                    <CustomText id="Destination" text={offer["destination"]["name"]}/>
-                    <CustomText id="Offerer" text={offer["created_by_id"]}/>
-                    <CustomText id="Offerer Rating" text="4.5"/>
-                    <CustomText id="Cost" text="$20"/>
-                    <CustomText id="Time Until Pickup" text="10"/>
-
+                    <CustomText id="Taxi ID" text={taxiInformation.taxi_id}/>
                 </View>
             </BottomSheetView>
         </BottomeSheet>
@@ -39,6 +32,6 @@ const styles = StyleSheet.create({
         height:'100%',
         width:'80%',
         display:'flex',
-        marginBottom:15 // <- changed from gap
+        gap:15
     }
   });

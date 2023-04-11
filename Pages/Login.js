@@ -8,9 +8,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
+
 function LoginPage({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
@@ -42,7 +44,7 @@ function LoginPage({navigation}) {
                     />
                 </View>
                 <View style = {{width: '100%', paddingVertical: 30}}>
-                    <AppButton text = "log in" txtColor='white' bgColor='#00ABE4'/>
+                    <AppButton text = "log in" txtColor='white' bgColor='#00ABE4' testProp={"test"}/>
                 </View>
             </View>
             </ScrollView>

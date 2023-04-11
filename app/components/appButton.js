@@ -1,9 +1,11 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import handleLogin from '../../api/login';
 
 function AppButton({text, onPress, txtColor, bgColor}){
+  
     return(
-      <TouchableOpacity onPress = {onPress}>
+      <TouchableOpacity onPress={onPress}>
         <View style = {[styles.button, {backgroundColor: bgColor}]}>
           <Text style = {[styles.buttonText, {color: txtColor}]}>{text.toUpperCase()}</Text>
         </View>

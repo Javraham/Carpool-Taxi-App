@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppButton from '../app/components/appButton';
 import { TextInput, StyleSheet, Image, Text } from 'react-native';
-import FormInput from '../app/components/appInput';
+import FormInput from '../app/components/appInput'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import Login from '../api/login';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 function NewLoginPage({navigation}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    async function handleLogin() {
+        try{
+            await Login({email:username, password})
+            navigation.navigate("Home")
+        }catch(err){
+            console.log(`login error! --- ${err}`)
+        }
+
+    }
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
@@ -51,12 +64,12 @@ function NewLoginPage({navigation}) {
                         />
                         </View>
                     <View style = {{paddingVertical: 30, width: '80%'}}>
-                        <AppButton text = "log in" txtColor='white' bgColor='#00ABE4'/>
+                        <AppButton text = "log in" txtColor='white' bgColor='#00ABE4' onPress={handleLogin}/>
                     </View>
                 </View>
             </View>
             </ScrollView>
-        </SafeAreaView>
+            </SafeAreaView>
         </SafeAreaProvider>
     );
 }
@@ -104,3 +117,4 @@ const styles = StyleSheet.create({
 })
 
 export default NewLoginPage;
+

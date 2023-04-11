@@ -8,8 +8,12 @@ import MapViewDirections from 'react-native-maps-directions';
 import CarpoolInfoBottomSheet from '../app/components/CarpoolInfoBottomSheet';
 import PassangerCountBottomSheet from '../app/components/PassangerCountBottomSheet';
 import MyInfoBottomSheet from '../app/components/MyInfoBottomSheet';
+import { Button } from '@react-native-material/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import MakeCarpoolRequest from '../api/requestCarpool';
+import { StackActions } from '@react-navigation/native';
 
-export default function CarpoolRequestInformation() {
+export default function CarpoolRequestInformation({navigation, route}) {
     const [query, setQuery] = useState({id:'', text:''});
     const [result, setResult] = useState({id:'', text:''})
     const [trip, setTrip] = useState({})
@@ -17,33 +21,25 @@ export default function CarpoolRequestInformation() {
     const [ogTrip, setOGTrip] = useState();
     const [waypoints, setWayPoints] = useState();
     const [currentSheet, setCurrentSheet] = useState(''); 
-
+    const [requestInformation, setRequestInformation] = useState({})
+    const [coords, setCoords] = useState([])
     const autocomplete = useRef();
     const map = useRef()
     const passangerCountSheetRef = useRef();
     const carpoolInfoSheetRef = useRef();
     const myInfoSheetRef = useRef();
     
+
     useEffect(() => {
+        let offer = route.params.offer
         const offer_trip = {
-            destination: {
-                geometry: {
-                    latitude: 43.2584431,
-                    longitude: -79.9075153
-                },
-                name: "McMaster University, Main Street West, Hamilton, ON, Canada"
-            },
-            origin: {
-                geometry: {
-                    latitude: 43.4805021,
-                    longitude: -79.7043068
-                },
-                name: "2141 Laurelwood Drive, Oakville, ON, Canada"
-            },
-            waypoints:[{geometry:  {latitude: 43.2584184, longitude: -79.8708274}, name: "1130 Leewood Drive, Oakville, ON, Canada"}]
+            destination: offer["destination"],
+            origin: offer["origin"],
+            waypoints: offer["waypoints"]
         }
-        setOGTrip(offer_trip)
-        setTrip(offer_trip)
+        setCoords([offer["origin"]["geometry"], offer["destination"]["geometry"]])
+        setOGTrip(offer)
+        setTrip(offer)
     },[])
    
     useEffect(() => {
@@ -58,11 +54,18 @@ export default function CarpoolRequestInformation() {
     useEffect(() => {
         if (result.text.length > 0){
             (async() => {
+                const uid = JSON.parse(await AsyncStorage.getItem("user")).uid
                 const geometry = await getGeometry(result.text)
-                console.log(geometry)
+                setRequestInformation(
+                    {
+                        waypoint:{name:result.text, geometry},
+                        created_by_id: uid,
+                        send_request_to_id: trip.created_by_id
+                    }
+                )
                 setTrip((prev) => {
                     if (!trip.waypoints.includes({name:result.text, geometry})){
-                        return({...prev, waypoints: [...(trip.waypoints),({name:result.text, geometry})]})
+                        return({...prev, waypoints: [...(trip.waypoints),({name:result.text, geometry})], created_by_id:uid})
                     }
                     return prev
             })
@@ -70,6 +73,10 @@ export default function CarpoolRequestInformation() {
         }
     },[result])
 
+    useEffect(() => {
+        console.log(requestInformation)
+    },[requestInformation])
+    
     useEffect(() => {
         if (trip.waypoints && ogTrip.waypoints){
             if (trip.waypoints.length > ogTrip.waypoints.length) {
@@ -85,6 +92,17 @@ export default function CarpoolRequestInformation() {
     }
     },[trip])
 
+    async function handleRequestCarpool() {
+        try{
+            console.log(requestInformation)
+            await MakeCarpoolRequest(requestInformation)
+            navigation.dispatch(StackActions.pop(1))
+            navigation.navigate('Home Tab')
+        }catch(err){
+            console.log(err)
+        }
+    }
+
     const openPassangerCountBottomSheet = useCallback((index) => {
         passangerCountSheetRef.current?.snapToIndex(index);
     },[])
@@ -97,12 +115,12 @@ export default function CarpoolRequestInformation() {
         myInfoSheetRef.current?.snapToIndex(index);
     },[])
     function fitMapToPolyline() {
-        map.current.fitToCoordinates([trip["origin"]["geometry"],trip["destination"]["geometry"] ],{
+        map.current.fitToCoordinates(coords,{
             edgePadding: {
-              top: 160,
-              right: 90,
-              bottom: 90,
-              left: 90,
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
             },
           });
         }
@@ -110,7 +128,8 @@ export default function CarpoolRequestInformation() {
         <View style={styles.pageContainer}>
             <View style={styles.inputContainer}>
                 <View style={{height:'30%', width:'100%', marginBottom:3}}>
-                    <ScrollView horizontal style={styles.header} contentContainerStyle={{display:'flex', alignItems:'center', gap:'8%'}}>
+                    {/* changed to marginBottom was 8% */}
+                    <ScrollView horizontal style={styles.header} contentContainerStyle={{display:'flex', alignItems:'center'}}>
                         <PressableBadge title="Passanger Count" iconName="account-multiple" openBottomSheet={openPassangerCountBottomSheet} setCurrentSheet={setCurrentSheet}/>
                         <PressableBadge title="Carpool Info" iconName="car-info" openBottomSheet={openCarpoolInfoBottomSheet} setCurrentSheet={setCurrentSheet}/>
                         <PressableBadge title="My Info" iconName="account" openBottomSheet={openMyInfoBottomSheet} setCurrentSheet={setCurrentSheet}/>
@@ -136,9 +155,9 @@ export default function CarpoolRequestInformation() {
                         }}
                     />
                     {displayMap && <MapView style={styles.map} ref={map}>
-                        {Object.keys(trip).map((name) => (
-                            <Marker key={name} coordinate={trip[name]["geometry"]}/>
-                        ))}
+                        {coords.map((coord, index) => {
+                            console.log(coords)
+                            return(<Marker key={index} coordinate={coord}/>)})}
                         {waypoints.map((waypoint,index) => (
                             <Marker key={`waypoint ${index}`} coordinate={waypoint}/>
                         ))}
@@ -156,9 +175,10 @@ export default function CarpoolRequestInformation() {
                         />
                     </MapView>}
                 </View>
-                {currentSheet === "Passanger Count" && <PassangerCountBottomSheet isDisabled={true} sheetRef={passangerCountSheetRef}/>}
-                {currentSheet === "Carpool Info" && <CarpoolInfoBottomSheet sheetRef={carpoolInfoSheetRef}/>}
-                {currentSheet === "My Info" && <MyInfoBottomSheet sheetRef={myInfoSheetRef}/>}
+                {currentSheet === "Passanger Count" && <PassangerCountBottomSheet isDisabled={true} sheetRef={passangerCountSheetRef} count={route.params.offer["passenger_limit"]["value"]}/>}
+                {currentSheet === "Carpool Info" && <CarpoolInfoBottomSheet sheetRef={carpoolInfoSheetRef} offer={route.params.offer}/>}
+                {/* {currentSheet === "My Info" && <MyInfoBottomSheet sheetRef={myInfoSheetRef}/>} */}
+                {displayMap && <Button style={{backgroundColor:'black'}} title="Request Carpool" onPress={handleRequestCarpool}/>}
 
         </View>
     )

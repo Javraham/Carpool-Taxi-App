@@ -6,12 +6,23 @@ import FormInput from '../app/components/appInput';
 import AppButton from '../app/components/appButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { NavigationContainer } from '@react-navigation/native';
+import Register from '../api/register';
 
 function RegistrationPage({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [fullname, setFullname] = useState('');
     const [phonenumber, setPhonenumber] = useState('');
+
+    async function handleRegister() {
+        try{
+            await Register({email, password, full_name:fullname, phone_number: phonenumber})
+            navigation.navigate("Home")
+        }catch(err){
+            console.log(`registration failes! --- ${err}`)
+        }
+
+    }
     return (
         <SafeAreaProvider>
             <SafeAreaView style = {{flex: 1}}>
@@ -62,7 +73,7 @@ function RegistrationPage({navigation}) {
                         />
                 </View>
                 <View style = {{width: '100%'}}>
-                    <AppButton text="Create Account" bgColor='#00ABE4' txtColor='white'/>
+                    <AppButton text="Create Account" bgColor='#00ABE4' txtColor='white' onPress={handleRegister}/>
                 </View>
             </View>
             </ScrollView>

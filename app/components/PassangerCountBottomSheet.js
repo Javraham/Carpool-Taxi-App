@@ -1,12 +1,18 @@
-import react, {useRef, useCallback, useState} from 'react';
+import react, {useRef, useCallback, useState, useEffect} from 'react';
 import {View, StyleSheet, Pressable} from 'react-native';
 import BottomeSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 import NumericInput from 'react-native-numeric-input'
 import { Text } from '@react-native-material/core';
 
-export default function PassangerCountBottomSheet({sheetRef, isDisabled = false}){
-    const [value, setValue] = useState(0);
+export default function PassangerCountBottomSheet({sheetRef, isDisabled = false, setOfferInformation, count = 0}){
+    const [value, setValue] = useState(count);
     const snapPoints = ["30%"]
+
+    useEffect(() => {
+      if (setOfferInformation !== undefined){
+        setOfferInformation((prev) => ({...prev, passenger_limit: value}))
+      }
+    }, [value])
 
     return(
         <BottomeSheet ref={sheetRef} snapPoints={snapPoints} enablePanDownToClose={true} >

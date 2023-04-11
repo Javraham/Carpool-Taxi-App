@@ -20,9 +20,9 @@ export default function OfferCarpool({navigation}) {
   }, []);
 
   const handleBarCodeScanned = (target) => {
-    setScannedData(target.data)
+    setScannedData(JSON.parse(target.data))
     setScanned(true);
-    navigation.push("Carpool Offer Information", {name: "Plan Your Carpool"}) // pass in scanned data here
+    navigation.push("Carpool Offer Information", {name: "Plan Your Carpool", scannedData: JSON.parse(target.data)}) // pass in scanned data here
     setTimeout(() => {
       handleClean()
     }, 2000);
@@ -45,7 +45,6 @@ const handleClean = () => {
     return <Text>No access to camera</Text>;
   }
 
-  const formFields = ["Taxi ID","Name", "Pickup", "Destination", "Passanger Counter"]
   return (
     <View style={styles.container}>
 

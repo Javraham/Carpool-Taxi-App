@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
         height:'100%',
         width:'80%',
         display:'flex',
-        gap:15
+        marginBottom:15 // <- changed
     }
   });

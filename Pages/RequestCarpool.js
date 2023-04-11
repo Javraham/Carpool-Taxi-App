@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ListItem, Avatar } from "@react-native-material/core";
 import {View} from 'react-native';
-
-const Offer = {
-    origin: "Oakville",
-    destination: "Hamilton"
-}
+import GetAllOffers from '../api/getAllOffers';
+import { Icon } from '@react-native-material/core';
 
 export default function RequestCarpool({navigation}) {
+    const [offers, setOffers] = useState([])
+    useEffect(()=>{
+        (async() => {
+            try {
+                const res = await GetAllOffers()
+                console.log(res.data)
+                setOffers(res.data)
+            }catch(err){
+                console.log(err)
+            }
+        })()
+    }, [])
+
     return (
     <View>
-        <ListItem
-        onPress={() => {
-            navigation.push("Carpool Request", {name: "Plan Your Carpool"})
-        }}
-        leadingMode="avatar"
-        leading={
-            <Avatar image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }} />
-        }
-        title="Brunch this weekend?"
-        secondaryText="I'll be in your neighborhood doing errands this…"
-        />
+        {offers.map((offer, index) => {
+            return (
+                <ListItem key={index} leading={<Icon name="map-marker-plus" size={24} />} title={`from: ${offer["origin"]["name"]}`} secondaryText={`to: ${offer["destination"]["name"]}`} onPress={() => {
+                    navigation.push("Carpool Request", {name: "Plan Your Carpool", offer})
+                }} />
+            )
+        })}
+    
     </View>
     )
 }
 
+
+
+// onPress={() => {
+//     navigation.push("Carpool Request", {name: "Plan Your Carpool"})
+// }}

@@ -13,9 +13,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import NewLoginPage from './Pages/newLogin';
 import CarpoolOfferInformation from './Pages/CarpoolOfferInformation';
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
 import { IconComponentProvider } from "@react-native-material/core";
 import CarpoolRequestInformation from './Pages/CarpoolRequestInformation';
+
+import axios from 'axios';
+axios.defaults.baseURL = "http://10.0.1.23:8888"
 
 const Auth = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -43,11 +45,21 @@ const OfferCarpoolScreen = () => {
   )
 }
 
+const Tab = () => {
+  return (
+        <Tabs.Navigator>
+          <Tabs.Screen name='Home Tab' component={HomePage} />
+          <Tabs.Screen name='Offer Carpool Tab' component={OfferCarpoolScreen} options={{headerShown:false}}/>
+          <Tabs.Screen name='Request Carpool Tab' component={RequestCarpoolScreen} options={{headerShown:false}}/>
+          <Tabs.Screen name='Profile' component={UserProfile} />
+        </Tabs.Navigator>
+  )
+}
 export default function App() {
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <NavigationContainer>
-      {/* <Auth.Navigator>
+      <Auth.Navigator>
           <Auth.Screen name = "Welcome" component = {WelcomePage} 
             options = {{headerShown: false}}
             />
@@ -57,13 +69,10 @@ export default function App() {
           <Auth.Screen name = "Login" component = {NewLoginPage}
             options = {{headerShown: false}}
           />
-        </Auth.Navigator> */}
-        <Tabs.Navigator>
-          <Tabs.Screen name='Home' component={HomePage} />
-          <Tabs.Screen name='Offer Carpool Tab' component={OfferCarpoolScreen} options={{headerShown:false}}/>
-          <Tabs.Screen name='Request Carpool Tab' component={RequestCarpoolScreen} options={{headerShown:false}}/>
-          <Tabs.Screen name='Profile' component={UserProfile} />
-        </Tabs.Navigator>
+          <Auth.Screen name = "Home" component = {Tab} 
+            options = {{headerShown: false}}
+            />
+        </Auth.Navigator>
       </NavigationContainer>
     </IconComponentProvider>
   );

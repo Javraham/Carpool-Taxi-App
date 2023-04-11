@@ -5,7 +5,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import FormInput from '../app/components/appInput';
 import AppButton from '../app/components/appButton';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 
 
@@ -76,8 +76,7 @@ function UserProfileEdit({navigation}) {
             else{
                 setValidity(prevInputs => ({...prevInputs, [input]:false}))
             }
-        }
-        
+        }        
     }
 
     const displayInputState = (text, input) => {
@@ -103,10 +102,13 @@ function UserProfileEdit({navigation}) {
 
         if (Object.entries(valid).every(([key, value]) => value )){
             updateProfile();
+            navigation.dispatch(StackActions.pop(1))
+
         }
         else{
             console.log(valid)
         }
+
     }
 
     const updateProfile = () => {

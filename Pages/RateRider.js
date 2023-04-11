@@ -4,6 +4,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import AppButton from '../app/components/appButton';
 import RateButton from '../app/components/rateButton';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StackActions } from '@react-navigation/native';
 
 
 function RateRiderPage({navigation}) {
@@ -52,7 +53,9 @@ function RateRiderPage({navigation}) {
                         </View>
                     </View>
                     <View style  = {{width : '80%'}}>
-                        <AppButton text = 'submit' bgColor={'#89CFF0'} txtColor={'white'} disabled = {disable} />
+                        <AppButton text = 'submit' bgColor={'#89CFF0'} txtColor={'white'} disabled = {disable} onPress={() => {
+                            navigation.navigate('Home')
+                        }} />
                     </View>
                 </View>
             </View>

@@ -22,6 +22,7 @@ import RequestSongPage from './Pages/RequestSong';
 
 import axios from 'axios';
 import Constants from "expo-constants";
+import AcknowledgeCarpool from './Pages/AcknowledgeCarpool';
 const { manifest } = Constants;
 
 // axios.defaults.baseURL = "http://10.0.1.23:8888"
@@ -30,6 +31,9 @@ axios.defaults.baseURL = `http://${manifest.debuggerHost.split(':').shift()}:888
 const Auth = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 const RequestCarpoolStack = createStackNavigator();
+const OfferCarpoolStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+const HomeStack = createStackNavigator();
 
 const RequestCarpoolScreen = () => {
   return (
@@ -44,22 +48,41 @@ const RequestCarpoolScreen = () => {
 
 const OfferCarpoolScreen = () => {
   return (
-  <RequestCarpoolStack.Navigator>
-    <RequestCarpoolStack.Screen name='Offer Carpool' component={OfferCarpool} options={{headerShown:false}}/>
-    <RequestCarpoolStack.Screen name='Carpool Offer Information' component={CarpoolOfferInformation} options={({route}) => {
+  <OfferCarpoolStack.Navigator>
+    <OfferCarpoolStack.Screen name='Offer Carpool' component={OfferCarpool} options={{headerShown:false}}/>
+    <OfferCarpoolStack.Screen name='Carpool Offer Information' component={CarpoolOfferInformation} options={({route}) => {
       return {title: route.params.name, headerBackTitle: 'Back', headerStyle:{elevation:0, shadowOpacity:0, borderBottomWidth:0}}
     }}/>
-  </RequestCarpoolStack.Navigator>
+  </OfferCarpoolStack.Navigator>
   )
 }
 
+const ProfileScreen = () => {
+  return(
+    <ProfileStack.Navigator>
+    <ProfileStack.Screen name='Profile' component={UserProfile} />
+    <ProfileStack.Screen name='ProfileEdit' component={UserProfileEdit}/>
+  </ProfileStack.Navigator>
+  )
+
+}
+
+const HomeScreen = () => {
+  return (
+    <HomeStack.Navigator>
+    <HomeStack.Screen name='Home' component={HomePage} />
+    <HomeStack.Screen name='Acknowledge Request' component={AcknowledgeCarpool}/>
+    <HomeStack.Screen name='Rate Rider' component={RateRiderPage}/>
+  </HomeStack.Navigator>
+  )
+}
 const Tab = () => {
   return (
         <Tabs.Navigator>
-          <Tabs.Screen name='Home Tab' component={HomePage} />
+          <Tabs.Screen name='Home Tab' component={HomeScreen} options={{headerShown:false}}/>
           <Tabs.Screen name='Offer Carpool Tab' component={OfferCarpoolScreen} options={{headerShown:false}}/>
           <Tabs.Screen name='Request Carpool Tab' component={RequestCarpoolScreen} options={{headerShown:false}}/>
-          <Tabs.Screen name='Profile' component={UserProfile} />
+          <Tabs.Screen name='Profile Tab' component={ProfileScreen} options={{headerShown:false}}/>
         </Tabs.Navigator>
   )
 }

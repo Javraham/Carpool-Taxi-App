@@ -9,7 +9,11 @@ import { Badge } from '@react-native-material/core';
 import BottomeSheet, {BottomSheetView} from '@gorhom/bottom-sheet'
 import CutomText from '../app/components/CustomText';
 import MapView from 'react-native-maps';
-export default function Home() {
+import Constants from "expo-constants";
+
+const { manifest } = Constants;
+
+export default function Home({navigation}) {
     const [data, setData] = useState({myOffer:[],carpoolRequests:[]});
     const [myOffer, setMyOffer] = useState([])
     const [myRequest, setMyRequest] = useState([])
@@ -19,7 +23,7 @@ export default function Home() {
         (async() => {
             const access_token = `Bearer ${await AsyncStorage.getItem("access_token")}`
             try {
-                const es = new EventSourcePolyfill("http://10.0.1.23:8888/notifications/subscribe/myid",{
+                const es = new EventSourcePolyfill(`http://${manifest.debuggerHost.split(':').shift()}:8888/notifications/subscribe/myid`,{
                     headers: {
                         "Authorization": access_token
                     }
@@ -80,7 +84,8 @@ export default function Home() {
                     {incomingRequests.map((request, index) => {
                         return(<ListItem key={`request_${index}`} onPress={() => {
                             setShowOfferInfo(true)
-                            openSheet(0)
+                            console.log(myOffer)
+                            navigation.push("Acknowledge Request", {name: "Acknowledge Request", offer:myOffer[0]})
                         }} leading={<Badge  label="" color="green" />} title={`from: ${request["waypoint"]["name"]}`} />)
                     })}
                 </View>

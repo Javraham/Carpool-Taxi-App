@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MakeCarpoolRequest from '../api/requestCarpool';
 import { StackActions } from '@react-navigation/native';
 
+
 export default function AcknowledgeCarpool({navigation, route}) {
     const [query, setQuery] = useState({id:'', text:''});
     const [result, setResult] = useState({id:'', text:''})
